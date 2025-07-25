@@ -1,29 +1,34 @@
-// Time Complexity: O(n) — we scan the array only once using two pointers
-// Space Complexity: O(1) — only a few variables are used, no extra space required
+// Container With Most Water
+
 
 class Solution {
 public:
-    int maxArea(vector<int>& height) {
-        int left = 0;                      // Pointer starting from the beginning
-        int right = height.size() - 1;     // Pointer starting from the end
-        int maxWater = 0;                  // Variable to store the maximum water area found
+    int maxArea(vector<int>& heights) {
+        int l = 0;  // left pointer at the beginning
+        int r = heights.size() - 1;  // right pointer at the end
+        int res = 0;  // to store the maximum area found
 
-        // Loop until the two pointers meet
-        while (left < right) {
-            int width = right - left;                                // Width between the two lines
-            int h = min(height[left], height[right]);                // Height is the shorter of the two lines
-            int water = width * h;                                   // Area formed by the two lines
-            maxWater = max(maxWater, water);                         // Update maxWater if current area is greater
+        while (l < r) {
+            // Calculate the area between the two lines at l and r
+            // Height is limited by the shorter line, width is (r - l)
+            int area = min(heights[l], heights[r]) * (r - l);
+            
+            // Update result if this area is greater than the max found so far
+            res = max(res, area);
 
             // Move the pointer pointing to the shorter line inward,
-            // because moving the taller one cannot increase the area
-            if (height[left] < height[right]) {
-                left++;     // Move left pointer to the right
+            // because moving the taller line won't increase area
+            if (heights[l] <= heights[r]) {
+                l++;
             } else {
-                right--;    // Move right pointer to the left
+                r--;
             }
         }
 
-        return maxWater;  // Return the maximum area found
+        return res; // Return the maximum area found
     }
 };
+
+
+// Time Complexity: O(n), Space Complexity: O(1)
+// where n = number of elements in heights array
